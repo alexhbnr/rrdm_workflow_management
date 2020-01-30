@@ -391,7 +391,7 @@ snakemake -s test.Snakefile -n -p
   - two versions: the efficient one removes a bottleneck of saving a large file unnecessarily to
     file
 
-``{bash, eval=F}
+```{bash, eval=F}
 snakemake -s rrdm_workflow_management.efficient.Snakefile -n -p
 ```
 

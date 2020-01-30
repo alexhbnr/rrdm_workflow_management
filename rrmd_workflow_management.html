@@ -907,47 +907,51 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <li>prepared in the repository</li>
 <li>two versions: the efficient one removes a bottleneck of saving a large file unnecessarily to file</li>
 </ul>
-<p>``{bash, eval=F} snakemake -s rrdm_workflow_management.efficient.Snakefile -n -p</p>
-<pre><code>
+<div class="sourceCode" id="cb18"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1"></a><span class="ex">snakemake</span> -s rrdm_workflow_management.efficient.Snakefile -n -p</span></code></pre></div>
+</section>
+</section>
+<section>
+<section id="more-advanced-snakemake" class="title-slide slide level1">
+<h1>More advanced snakemake</h1>
 
-
-# More advanced snakemake
-
-## Grammar blocks to decorate your rules:
-
-  - four grammar blocks have been introduced so far:
-    + input
-    + output
-    + params
-    + shell
-
-  - however, a few more useful ones
-
-## Grammar blocks to decorate your rules:
-
-  - **message**: replace the cryptic Snakemake output with a catchy message that tells you what is
-    currently executed and on which sample
-  - **log**: provides a fast way to define the filename for saving the log file using wildcards
-  - **benchmark**: provides you feedback, how many resources (mainly memory) were used for executing
-    a rule
-
-## Grammar blocks to decorate your rules:
-
-  - **resources**: define a custom list of resources in order to restrict the parallel execution of
-    resources-hungry jobs
-  - **threads**: define the number of CPUs a job needs in order to restrict the parallel execution of
-    resources-hungry jobs 
-  - **run**: run Python or R code directly instead of a shell script
-
-## Running jobs in parallel
-
-  - rules that do not depend on other samples can be run in parallel for each sample
-  - **requirement**: more than one job is allowed at the same time
-  - in order to enable more jobs use option `-j` or `--jobs`:
-
-
-```bash
-snakemake -s test.Snakefile -j 3</code></pre>
+</section>
+<section id="grammar-blocks-to-decorate-your-rules" class="slide level2">
+<h2>Grammar blocks to decorate your rules:</h2>
+<ul>
+<li>four grammar blocks have been introduced so far:
+<ul>
+<li>input</li>
+<li>output</li>
+<li>params</li>
+<li>shell</li>
+</ul></li>
+<li>however, a few more useful ones</li>
+</ul>
+</section>
+<section id="grammar-blocks-to-decorate-your-rules-1" class="slide level2">
+<h2>Grammar blocks to decorate your rules:</h2>
+<ul>
+<li><strong>message</strong>: replace the cryptic Snakemake output with a catchy message that tells you what is currently executed and on which sample</li>
+<li><strong>log</strong>: provides a fast way to define the filename for saving the log file using wildcards</li>
+<li><strong>benchmark</strong>: provides you feedback, how many resources (mainly memory) were used for executing a rule</li>
+</ul>
+</section>
+<section id="grammar-blocks-to-decorate-your-rules-2" class="slide level2">
+<h2>Grammar blocks to decorate your rules:</h2>
+<ul>
+<li><strong>resources</strong>: define a custom list of resources in order to restrict the parallel execution of resources-hungry jobs</li>
+<li><strong>threads</strong>: define the number of CPUs a job needs in order to restrict the parallel execution of resources-hungry jobs</li>
+<li><strong>run</strong>: run Python or R code directly instead of a shell script</li>
+</ul>
+</section>
+<section id="running-jobs-in-parallel" class="slide level2">
+<h2>Running jobs in parallel</h2>
+<ul>
+<li>rules that do not depend on other samples can be run in parallel for each sample</li>
+<li><strong>requirement</strong>: more than one job is allowed at the same time</li>
+<li>in order to enable more jobs use option <code>-j</code> or <code>--jobs</code>:</li>
+</ul>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1"></a><span class="ex">snakemake</span> -s test.Snakefile -j 3</span></code></pre></div>
 <ul>
 <li>on a local computer, jobs are restricted by the number of <strong>threads</strong> defined in a rule</li>
 </ul>
@@ -957,8 +961,8 @@ snakemake -s test.Snakefile -j 3</code></pre>
 <ul>
 <li>no change to code necessary, just provide commandline option <code>--cluster</code> and your parameters for the scheduler, e.g. SLURM</li>
 </ul>
-<div class="sourceCode" id="cb19"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1"></a><span class="ex">snakemake</span> -s test.Snakefile \</span>
-<span id="cb19-2"><a href="#cb19-2"></a>    --cluster <span class="st">&quot;sbatch --mem 8G -p short -t 0-2:00&quot;</span> -j 3</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1"></a><span class="ex">snakemake</span> -s test.Snakefile \</span>
+<span id="cb20-2"><a href="#cb20-2"></a>    --cluster <span class="st">&quot;sbatch --mem 8G -p short -t 0-2:00&quot;</span> -j 3</span></code></pre></div>
 <ul>
 <li>specify different resource requirements (memory, partition, time) for individual rules using the option <code>--cluster-config</code> and a JSON file</li>
 </ul>
@@ -968,15 +972,15 @@ snakemake -s test.Snakefile -j 3</code></pre>
 <ul>
 <li>wrap <strong>temp()</strong> around filename of the output rule to have automatically removed as an intermediate file when all rules that depend on it have successfully finished</li>
 </ul>
-<div class="sourceCode" id="cb20"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1"></a><span class="ex">rule</span> sort_coord:</span>
-<span id="cb20-2"><a href="#cb20-2"></a>    <span class="ex">output</span>:</span>
-<span id="cb20-3"><a href="#cb20-3"></a>        <span class="ex">temp</span>(<span class="st">&quot;{sample}.sorted.bam&quot;</span>)</span>
-<span id="cb20-4"><a href="#cb20-4"></a>    <span class="ex">params</span>:</span>
-<span id="cb20-5"><a href="#cb20-5"></a>        <span class="ex">bam</span> = <span class="st">&quot;{sample}.hg19.bam&quot;</span></span>
-<span id="cb20-6"><a href="#cb20-6"></a>    <span class="ex">shell</span>:</span>
-<span id="cb20-7"><a href="#cb20-7"></a>        <span class="st">&quot;&quot;&quot;</span></span>
-<span id="cb20-8"><a href="#cb20-8"></a><span class="st">        samtools sort -o {output} {params.bam}</span></span>
-<span id="cb20-9"><a href="#cb20-9"></a><span class="st">        &quot;&quot;&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1"></a><span class="ex">rule</span> sort_coord:</span>
+<span id="cb21-2"><a href="#cb21-2"></a>    <span class="ex">output</span>:</span>
+<span id="cb21-3"><a href="#cb21-3"></a>        <span class="ex">temp</span>(<span class="st">&quot;{sample}.sorted.bam&quot;</span>)</span>
+<span id="cb21-4"><a href="#cb21-4"></a>    <span class="ex">params</span>:</span>
+<span id="cb21-5"><a href="#cb21-5"></a>        <span class="ex">bam</span> = <span class="st">&quot;{sample}.hg19.bam&quot;</span></span>
+<span id="cb21-6"><a href="#cb21-6"></a>    <span class="ex">shell</span>:</span>
+<span id="cb21-7"><a href="#cb21-7"></a>        <span class="st">&quot;&quot;&quot;</span></span>
+<span id="cb21-8"><a href="#cb21-8"></a><span class="st">        samtools sort -o {output} {params.bam}</span></span>
+<span id="cb21-9"><a href="#cb21-9"></a><span class="st">        &quot;&quot;&quot;</span></span></code></pre></div>
 <ul>
 <li>opposite: <strong>protected()</strong> - do not delete ever</li>
 </ul>
@@ -1026,15 +1030,15 @@ snakemake -s test.Snakefile -j 3</code></pre>
 </section>
 <section id="running-mitobench-ancient-mtdna-pipeline" class="slide level2">
 <h2>Running mitoBench ancient mtDNA pipeline</h2>
-<div class="sourceCode" id="cb21"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1"></a><span class="ex">snakemake</span> -s mitoBench_pipeline.Snakefile \</span>
-<span id="cb21-2"><a href="#cb21-2"></a>          --configfile mitoBench_pipeline-config.json \</span>
-<span id="cb21-3"><a href="#cb21-3"></a>          --cluster-config mitoBench_pipeline-SLURM.json \</span>
-<span id="cb21-4"><a href="#cb21-4"></a>          --cluster <span class="st">&#39;sbatch --mem {cluster.mem} -p {cluster.partition} \</span></span>
-<span id="cb21-5"><a href="#cb21-5"></a><span class="st">                    -t {cluster.time} -o {cluster.out} \</span></span>
-<span id="cb21-6"><a href="#cb21-6"></a><span class="st">                    -e {cluster.err} -n {threads}&#39;</span> \</span>
-<span id="cb21-7"><a href="#cb21-7"></a>          --use-conda \</span>
-<span id="cb21-8"><a href="#cb21-8"></a>          --local-cores 8 \</span>
-<span id="cb21-9"><a href="#cb21-9"></a>          --cores 20</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1"></a><span class="ex">snakemake</span> -s mitoBench_pipeline.Snakefile \</span>
+<span id="cb22-2"><a href="#cb22-2"></a>          --configfile mitoBench_pipeline-config.json \</span>
+<span id="cb22-3"><a href="#cb22-3"></a>          --cluster-config mitoBench_pipeline-SLURM.json \</span>
+<span id="cb22-4"><a href="#cb22-4"></a>          --cluster <span class="st">&#39;sbatch --mem {cluster.mem} -p {cluster.partition} \</span></span>
+<span id="cb22-5"><a href="#cb22-5"></a><span class="st">                    -t {cluster.time} -o {cluster.out} \</span></span>
+<span id="cb22-6"><a href="#cb22-6"></a><span class="st">                    -e {cluster.err} -n {threads}&#39;</span> \</span>
+<span id="cb22-7"><a href="#cb22-7"></a>          --use-conda \</span>
+<span id="cb22-8"><a href="#cb22-8"></a>          --local-cores 8 \</span>
+<span id="cb22-9"><a href="#cb22-9"></a>          --cores 20</span></code></pre></div>
 </section>
 </section>
     </div>
