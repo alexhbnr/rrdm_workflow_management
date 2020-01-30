@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="Alexander Hübner" />
+  <meta name="dcterms.date" content="2020-01-30" />
+  <title>Workflow management systems</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="rrmd_workflow_management_files/reveal.js-3.3.0.1/css/reveal.css"/>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    background-color: #ffffff;
+    color: #a0a0a0;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #a0a0a0;  padding-left: 4px; }
+div.sourceCode
+  { color: #1f1c1b; background-color: #ffffff; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span. { color: #1f1c1b; } /* Normal */
+code span.al { color: #bf0303; background-color: #f7e6e6; font-weight: bold; } /* Alert */
+code span.an { color: #ca60ca; } /* Annotation */
+code span.at { color: #0057ae; } /* Attribute */
+code span.bn { color: #b08000; } /* BaseN */
+code span.bu { color: #644a9b; font-weight: bold; } /* BuiltIn */
+code span.cf { color: #1f1c1b; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #924c9d; } /* Char */
+code span.cn { color: #aa5500; } /* Constant */
+code span.co { color: #898887; } /* Comment */
+code span.cv { color: #0095ff; } /* CommentVar */
+code span.do { color: #607880; } /* Documentation */
+code span.dt { color: #0057ae; } /* DataType */
+code span.dv { color: #b08000; } /* DecVal */
+code span.er { color: #bf0303; text-decoration: underline; } /* Error */
+code span.ex { color: #0095ff; font-weight: bold; } /* Extension */
+code span.fl { color: #b08000; } /* Float */
+code span.fu { color: #644a9b; } /* Function */
+code span.im { color: #ff5500; } /* Import */
+code span.in { color: #b08000; } /* Information */
+code span.kw { color: #1f1c1b; font-weight: bold; } /* Keyword */
+code span.op { color: #1f1c1b; } /* Operator */
+code span.ot { color: #006e28; } /* Other */
+code span.pp { color: #006e28; } /* Preprocessor */
+code span.re { color: #0057ae; background-color: #e0e9f8; } /* RegionMarker */
+code span.sc { color: #3daee9; } /* SpecialChar */
+code span.ss { color: #ff5500; } /* SpecialString */
+code span.st { color: #bf0303; } /* String */
+code span.va { color: #0057ae; } /* Variable */
+code span.vs { color: #bf0303; } /* VerbatimString */
+code span.wa { color: #bf0303; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="rrmd_workflow_management_files/reveal.js-3.3.0.1/css/theme/simple.css" id="theme">
+
+
+  <!-- some tweaks to reveal css -->
+  <style type="text/css">
+    .reveal h1 { font-size: 2.0em; }
+    .reveal h2 { font-size: 1.5em;  }
+    .reveal h3 { font-size: 1.25em;	}
+    .reveal h4 { font-size: 1em;	}
+
+    .reveal .slides>section,
+    .reveal .slides>section>section {
+      padding: 0px 0px;
+    }
+
+
+
+    .reveal table {
+      border-width: 1px;
+      border-spacing: 2px;
+      border-style: dotted;
+      border-color: gray;
+      border-collapse: collapse;
+      font-size: 0.7em;
+    }
+
+    .reveal table th {
+      border-width: 1px;
+      padding-left: 10px;
+      padding-right: 25px;
+      font-weight: bold;
+      border-style: dotted;
+      border-color: gray;
+    }
+
+    .reveal table td {
+      border-width: 1px;
+      padding-left: 10px;
+      padding-right: 25px;
+      border-style: dotted;
+      border-color: gray;
+    }
+
+
+  </style>
+
+    <style type="text/css">code{white-space: pre;}</style>
+
+
+<!-- Printing and PDF exports -->
+<script id="paper-css" type="application/dynamic-css">
+
+/* Default Print Stylesheet Template
+   by Rob Glazebrook of CSSnewbie.com
+   Last Updated: June 4, 2008
+
+   Feel free (nay, compelled) to edit, append, and
+   manipulate this file as you see fit. */
+
+
+@media print {
+
+	/* SECTION 1: Set default width, margin, float, and
+	   background. This prevents elements from extending
+	   beyond the edge of the printed page, and prevents
+	   unnecessary background images from printing */
+	html {
+		background: #fff;
+		width: auto;
+		height: auto;
+		overflow: visible;
+	}
+	body {
+		background: #fff;
+		font-size: 20pt;
+		width: auto;
+		height: auto;
+		border: 0;
+		margin: 0 5%;
+		padding: 0;
+		overflow: visible;
+		float: none !important;
+	}
+
+	/* SECTION 2: Remove any elements not needed in print.
+	   This would include navigation, ads, sidebars, etc. */
+	.nestedarrow,
+	.controls,
+	.fork-reveal,
+	.share-reveal,
+	.state-background,
+	.reveal .progress,
+	.reveal .backgrounds {
+		display: none !important;
+	}
+
+	/* SECTION 3: Set body font face, size, and color.
+	   Consider using a serif font for readability. */
+	body, p, td, li, div {
+		font-size: 20pt!important;
+		font-family: Georgia, "Times New Roman", Times, serif !important;
+		color: #000;
+	}
+
+	/* SECTION 4: Set heading font face, sizes, and color.
+	   Differentiate your headings from your body text.
+	   Perhaps use a large sans-serif for distinction. */
+	h1,h2,h3,h4,h5,h6 {
+		color: #000!important;
+		height: auto;
+		line-height: normal;
+		font-family: Georgia, "Times New Roman", Times, serif !important;
+		text-shadow: 0 0 0 #000 !important;
+		text-align: left;
+		letter-spacing: normal;
+	}
+	/* Need to reduce the size of the fonts for printing */
+	h1 { font-size: 28pt !important;  }
+	h2 { font-size: 24pt !important; }
+	h3 { font-size: 22pt !important; }
+	h4 { font-size: 22pt !important; font-variant: small-caps; }
+	h5 { font-size: 21pt !important; }
+	h6 { font-size: 20pt !important; font-style: italic; }
+
+	/* SECTION 5: Make hyperlinks more usable.
+	   Ensure links are underlined, and consider appending
+	   the URL to the end of the link for usability. */
+	a:link,
+	a:visited {
+		color: #000 !important;
+		font-weight: bold;
+		text-decoration: underline;
+	}
+	/*
+	.reveal a:link:after,
+	.reveal a:visited:after {
+		content: " (" attr(href) ") ";
+		color: #222 !important;
+		font-size: 90%;
+	}
+	*/
+
+
+	/* SECTION 6: more reveal.js specific additions by @skypanther */
+	ul, ol, div, p {
+		visibility: visible;
+		position: static;
+		width: auto;
+		height: auto;
+		display: block;
+		overflow: visible;
+		margin: 0;
+		text-align: left !important;
+	}
+	.reveal pre,
+	.reveal table {
+		margin-left: 0;
+		margin-right: 0;
+	}
+	.reveal pre code {
+		padding: 20px;
+		border: 1px solid #ddd;
+	}
+	.reveal blockquote {
+		margin: 20px 0;
+	}
+	.reveal .slides {
+		position: static !important;
+		width: auto !important;
+		height: auto !important;
+
+		left: 0 !important;
+		top: 0 !important;
+		margin-left: 0 !important;
+		margin-top: 0 !important;
+		padding: 0 !important;
+		zoom: 1 !important;
+
+		overflow: visible !important;
+		display: block !important;
+
+		text-align: left !important;
+		-webkit-perspective: none;
+		   -moz-perspective: none;
+		    -ms-perspective: none;
+		        perspective: none;
+
+		-webkit-perspective-origin: 50% 50%;
+		   -moz-perspective-origin: 50% 50%;
+		    -ms-perspective-origin: 50% 50%;
+		        perspective-origin: 50% 50%;
+	}
+	.reveal .slides section {
+		visibility: visible !important;
+		position: static !important;
+		width: auto !important;
+		height: auto !important;
+		display: block !important;
+		overflow: visible !important;
+
+		left: 0 !important;
+		top: 0 !important;
+		margin-left: 0 !important;
+		margin-top: 0 !important;
+		padding: 60px 20px !important;
+		z-index: auto !important;
+
+		opacity: 1 !important;
+
+		page-break-after: always !important;
+
+		-webkit-transform-style: flat !important;
+		   -moz-transform-style: flat !important;
+		    -ms-transform-style: flat !important;
+		        transform-style: flat !important;
+
+		-webkit-transform: none !important;
+		   -moz-transform: none !important;
+		    -ms-transform: none !important;
+		        transform: none !important;
+
+		-webkit-transition: none !important;
+		   -moz-transition: none !important;
+		    -ms-transition: none !important;
+		        transition: none !important;
+	}
+	.reveal .slides section.stack {
+		padding: 0 !important;
+	}
+	.reveal section:last-of-type {
+		page-break-after: avoid !important;
+	}
+	.reveal section .fragment {
+		opacity: 1 !important;
+		visibility: visible !important;
+
+		-webkit-transform: none !important;
+		   -moz-transform: none !important;
+		    -ms-transform: none !important;
+		        transform: none !important;
+	}
+	.reveal section img {
+		display: block;
+		margin: 15px 0px;
+		background: rgba(255,255,255,1);
+		border: 1px solid #666;
+		box-shadow: none;
+	}
+
+	.reveal section small {
+		font-size: 0.8em;
+	}
+
+}  
+</script>
+
+
+<script id="pdf-css" type="application/dynamic-css">
+    
+/**
+ * This stylesheet is used to print reveal.js
+ * presentations to PDF.
+ *
+ * https://github.com/hakimel/reveal.js#pdf-export
+ */
+
+* {
+	-webkit-print-color-adjust: exact;
+}
+
+body {
+	margin: 0 auto !important;
+	border: 0;
+	padding: 0;
+	float: none !important;
+	overflow: visible;
+}
+
+html {
+	width: 100%;
+	height: 100%;
+	overflow: visible;
+}
+
+/* Remove any elements not needed in print. */
+.nestedarrow,
+.reveal .controls,
+.reveal .progress,
+.reveal .playback,
+.reveal.overview,
+.fork-reveal,
+.share-reveal,
+.state-background {
+	display: none !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	text-shadow: 0 0 0 #000 !important;
+}
+
+.reveal pre code {
+	overflow: hidden !important;
+	font-family: Courier, 'Courier New', monospace !important;
+}
+
+ul, ol, div, p {
+	visibility: visible;
+	position: static;
+	width: auto;
+	height: auto;
+	display: block;
+	overflow: visible;
+	margin: auto;
+}
+.reveal {
+	width: auto !important;
+	height: auto !important;
+	overflow: hidden !important;
+}
+.reveal .slides {
+	position: static;
+	width: 100%;
+	height: auto;
+
+	left: auto;
+	top: auto;
+	margin: 0 !important;
+	padding: 0 !important;
+
+	overflow: visible;
+	display: block;
+
+	-webkit-perspective: none;
+	   -moz-perspective: none;
+	    -ms-perspective: none;
+	        perspective: none;
+
+	-webkit-perspective-origin: 50% 50%; /* there isn't a none/auto value but 50-50 is the default */
+	   -moz-perspective-origin: 50% 50%;
+	    -ms-perspective-origin: 50% 50%;
+	        perspective-origin: 50% 50%;
+}
+
+.reveal .slides section {
+	page-break-after: always !important;
+
+	visibility: visible !important;
+	position: relative !important;
+	display: block !important;
+	position: relative !important;
+
+	margin: 0 !important;
+	padding: 0 !important;
+	box-sizing: border-box !important;
+	min-height: 1px;
+
+	opacity: 1 !important;
+
+	-webkit-transform-style: flat !important;
+	   -moz-transform-style: flat !important;
+	    -ms-transform-style: flat !important;
+	        transform-style: flat !important;
+
+	-webkit-transform: none !important;
+	   -moz-transform: none !important;
+	    -ms-transform: none !important;
+	        transform: none !important;
+}
+
+.reveal section.stack {
+	margin: 0 !important;
+	padding: 0 !important;
+	page-break-after: avoid !important;
+	height: auto !important;
+	min-height: auto !important;
+}
+
+.reveal img {
+	box-shadow: none;
+}
+
+.reveal .roll {
+	overflow: visible;
+	line-height: 1em;
+}
+
+/* Slide backgrounds are placed inside of their slide when exporting to PDF */
+.reveal section .slide-background {
+	display: block !important;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: -1;
+}
+
+/* All elements should be above the slide-background */
+.reveal section>* {
+	position: relative;
+	z-index: 1;
+}
+
+/* Display slide speaker notes when 'showNotes' is enabled */
+.reveal .speaker-notes-pdf {
+	display: block;
+	width: 100%;
+	max-height: none;
+	left: auto;
+	top: auto;
+	z-index: 100;
+}
+
+/* Display slide numbers when 'slideNumber' is enabled */
+.reveal .slide-number-pdf {
+	display: block;
+	position: absolute;
+	font-size: 14px;
+}
+
+</script>
+
+
+<script>
+var style = document.createElement( 'style' );
+style.type = 'text/css';
+var style_script_id = window.location.search.match( /print-pdf/gi ) ? 'pdf-css' : 'paper-css';
+var style_script = document.getElementById(style_script_id).text;
+style.innerHTML = style_script;
+document.getElementsByTagName('head')[0].appendChild(style);
+</script>
+
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section>
+    <h1 class="title">Workflow management systems</h1>
+    <h2 class="author">Alexander Hübner</h2>
+    <h3 class="date">30 January 2020</h3>
+</section>
+
+<section id="computational-analysis-a-chain-of-commands" class="title-slide slide level1">
+<h1>Computational analysis: a chain of commands</h1>
+<ul>
+<li>most common computational analyses are complex: &gt;&gt; 1 step</li>
+<li>if only one or a few steps: <strong>quick and dirty</strong></li>
+<li>more steps or more samples: <strong>automation wanted</strong></li>
+</ul>
+</section>
+
+<section>
+<section id="example-calculate-the-average-coverage-at-chromosome-21-of-the-human-reference-genome" class="title-slide slide level1">
+<h1>Example: Calculate the average coverage at chromosome 21 of the human reference genome</h1>
+
+</section>
+<section id="set-up" class="slide level2">
+<h2>Set-up</h2>
+<ul>
+<li><p>3 BAM files with sequencing data aligned against the human reference genome (e.g. output of EAGER)</p></li>
+<li><p>samples taken from Meyer M et al. (Science, 2012): A high coverage genome sequence from an archaic Denisovan individual.</p>
+<ul>
+<li>HGDP00521: B_French</li>
+<li>HGDP00778: B_Han</li>
+<li>HGDP01029: B_San</li>
+</ul></li>
+<li><p>heavily sub-sampled: in folder “data”</p></li>
+</ul>
+</section>
+<section id="goal" class="slide level2">
+<h2>Goal</h2>
+<ul>
+<li>average coverage at chromosome 21 for all of the samples</li>
+</ul>
+</section>
+<section id="necessary-steps-per-sample" class="slide level2">
+<h2>Necessary steps per sample:</h2>
+<ol type="1">
+<li>Sort sample by coordinate</li>
+<li>Index sample</li>
+<li>Subset sample to chromosome 21</li>
+<li>Determine coverage along chromosome 21</li>
+<li>Calculate average coverage on chromosome 21</li>
+</ol>
+</section>
+</section>
+<section id="code-for-a-single-sample" class="title-slide slide level1">
+<h1>Code for a single sample</h1>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># 1. Use samtools sort to sort reads by co-ordinate;</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="co">#    requirement for indexing</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="ex">samtools</span> sort -o <span class="op">&lt;</span>sample<span class="op">&gt;</span>.sorted.bam <span class="op">&lt;</span>sample<span class="op">&gt;</span>.bam</span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="co"># 2. Use samtools index to generate index for random read extraction</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="ex">samtools</span> index <span class="op">&lt;</span>sample<span class="op">&gt;</span>.sorted.bam</span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="co"># 3. Extract all reads that were aligned to chromosome 21</span></span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="ex">samtools</span> view -bh <span class="op">&lt;</span>sample<span class="op">&gt;</span>.sorted.bam 21 <span class="op">&gt;</span> <span class="op">&lt;</span>sample<span class="op">&gt;</span>.21.bam</span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="co"># 4. Calculate the coverage along chromosome 21</span></span>
+<span id="cb1-9"><a href="#cb1-9"></a><span class="ex">samtools</span> depth -a <span class="op">&lt;</span>sample<span class="op">&gt;</span>.21.bam <span class="op">&gt;</span> <span class="op">&lt;</span>sample<span class="op">&gt;</span>.21_depth.txt</span>
+<span id="cb1-10"><a href="#cb1-10"></a><span class="co"># 5. Calculate the average coverage</span></span>
+<span id="cb1-11"><a href="#cb1-11"></a><span class="fu">awk</span> <span class="st">&#39;{sum += $3}END{print sum / NR}&#39;</span> <span class="op">&lt;</span>sample<span class="op">&gt;</span>.21_depth.txt \</span>
+<span id="cb1-12"><a href="#cb1-12"></a><span class="op">&gt;</span> <span class="op">&lt;</span>sample<span class="op">&gt;</span>.21_meancov.txt</span></code></pre></div>
+</section>
+
+<section>
+<section id="how-do-we-deal-with-multiple-samples" class="title-slide slide level1">
+<h1>How do we deal with multiple samples?</h1>
+
+</section>
+<section id="worst-copy-and-paste" class="slide level2">
+<h2>Worst: copy and paste</h2>
+<ul>
+<li><p>bad practice</p></li>
+<li><p>use only for</p>
+<ul>
+<li>small number of samples (rule of thumb: &lt;= 3)</li>
+<li>will do only a single time</li>
+</ul></li>
+<li><p>problems:</p>
+<ul>
+<li>modifying code requires a lot of changes</li>
+<li>code block get redundant =&gt; hard to read and debug</li>
+</ul></li>
+</ul>
+</section>
+<section id="better-for-loops" class="slide level2">
+<h2>Better: for-loops</h2>
+<ul>
+<li><p>list samples for which a particular code block should be executed</p></li>
+<li><p>improvements:</p>
+<ul>
+<li>code modifications only have to be a single time</li>
+<li>no code redundancy: only two additional lines</li>
+</ul></li>
+</ul>
+</section>
+<section id="better-for-loops-1" class="slide level2">
+<h2>Better: for-loops</h2>
+<ul>
+<li>code example for <strong>for-loop</strong>:</li>
+</ul>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">for</span> <span class="ex">SAMPLE</span> in sample1 sample2 sample3<span class="kw">;</span> <span class="kw">do</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a>    <span class="co"># 1. Use samtools sort to sort reads by co-ordinate;</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a>    <span class="co">#    requirement for indexing</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a>    <span class="ex">samtools</span> sort -o <span class="va">${SAMPLE}</span>.sorted.bam <span class="va">${SAMPLE}</span>.bam</span>
+<span id="cb2-5"><a href="#cb2-5"></a>    <span class="co"># 2. Use samtools index to generate index for random read extraction</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a>    <span class="ex">samtools</span> index <span class="va">${SAMPLE}</span>.sorted.bam</span>
+<span id="cb2-7"><a href="#cb2-7"></a>    <span class="co"># 3. Extract all reads that were aligned to chromosome 21</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a>    <span class="ex">samtools</span> view -bh <span class="va">${SAMPLE}</span>.sorted.bam 21 <span class="op">&gt;</span> <span class="va">${SAMPLE}</span>.21.bam</span>
+<span id="cb2-9"><a href="#cb2-9"></a>    <span class="co"># 4. Calculate the coverage along chromosome 21</span></span>
+<span id="cb2-10"><a href="#cb2-10"></a>    <span class="ex">samtools</span> depth -a <span class="va">${SAMPLE}</span>.21.bam <span class="op">&gt;</span> <span class="va">${SAMPLE}</span>.21_depth.txt</span>
+<span id="cb2-11"><a href="#cb2-11"></a>    <span class="co"># 5. Calculate the average coverage</span></span>
+<span id="cb2-12"><a href="#cb2-12"></a>    <span class="fu">awk</span> <span class="st">&#39;{sum += $3}END{print sum / NR}&#39;</span> <span class="va">${SAMPLE}</span>.21_depth.txt \</span>
+<span id="cb2-13"><a href="#cb2-13"></a>    <span class="op">&gt;</span> <span class="va">${SAMPLE}</span>.21_meancov.txt</span>
+<span id="cb2-14"><a href="#cb2-14"></a><span class="kw">done</span></span></code></pre></div>
+</section>
+<section id="problems-for-loops" class="slide level2">
+<h2>Problems: for-loops</h2>
+<ul>
+<li><p>not aware of missing data</p>
+<ul>
+<li>successful samples have to be explicitly exclude to avoid re-processing</li>
+<li>makes it harder to understand with which commands samples were processed</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1"></a><span class="co">#for SAMPLE in sample1 sample2 sample3; do</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="kw">for</span> <span class="ex">SAMPLE</span> in sample1 sample2<span class="kw">;</span> <span class="kw">do</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a>    <span class="ex">...</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a><span class="kw">done</span></span></code></pre></div>
+</section>
+<section id="problems-for-loops-1" class="slide level2">
+<h2>Problems: for-loops</h2>
+<ul>
+<li><p>serial processing on local computer</p>
+<ul>
+<li>sample2 will only be processed after sample1 was succesfully processed</li>
+<li>when samples and steps are independent from each other, parallisation has to be done manually</li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section>
+<section id="real-life-worst-case-scenario" class="title-slide slide level1">
+<h1>Real-life worst-case scenario</h1>
+<p>We have 100 samples, of which only 15 successfully finished our for-loop:</p>
+<ol type="1">
+<li>60 samples have broken BAM files and we need to run additional steps to fix the input format prior to running our for-loop</li>
+<li>25 samles worked, however, they were low-coverage and we forgot to add the option <em>‘-a’</em> to the command <em>samtools depth</em> so that our average coverage estimate is wrong</li>
+<li>15 samples worked and were high coverage: correct estimates</li>
+</ol>
+</section>
+<section id="solutions" class="slide level2">
+<h2>Solutions:</h2>
+<ol type="1">
+<li><strong>60 failed samples</strong>: start from the beginning after fixing the input files</li>
+<li><strong>25 samples with wrong average coverage estimate</strong>: re-start from <em>samtools depth</em> command</li>
+<li><strong>15 samples that worked</strong>: exclude from input sample list to avoid re-processing</li>
+</ol>
+<p><strong>instead of 1 for-loop, now 2 for-loops!</strong></p>
+</section>
+</section>
+<section>
+<section id="workflow-management-systems" class="title-slide slide level1">
+<h1>Workflow management systems</h1>
+
+</section>
+<section id="workflows-or-pipelines" class="slide level2">
+<h2>Workflows or pipelines</h2>
+<ul>
+<li>computational analyses can be defined as a workflow with hierarchical steps</li>
+</ul>
+<p><img data-src="example_workflow.svg" /></p>
+<ul>
+<li>next to the steps, workflows describe the dependencies from the steps to each other</li>
+</ul>
+</section>
+<section id="the-predecessor-make-and-the-makefile" class="slide level2">
+<h2>The predecessor: make and the Makefile</h2>
+<ul>
+<li>originally build to maintain the building and compilation process of complex computational software</li>
+<li>syntax is build on defining which input is required and which output is expected</li>
+</ul>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1"></a><span class="op">&lt;</span><span class="ex">output</span><span class="op">&gt;</span>: <span class="op">&lt;</span>input<span class="op">&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a>    <span class="bu">command</span> to generate <span class="op">&lt;</span>output<span class="op">&gt;</span> from <span class="op">&lt;</span>input<span class="op">&gt;</span></span></code></pre></div>
+<ul>
+<li>execution: <code>make -f Makefile</code></li>
+</ul>
+</section>
+<section id="how-does-it-work" class="slide level2">
+<h2>How does it work?</h2>
+<ul>
+<li><p><strong>based on files</strong></p></li>
+<li><p><strong>recursive checking</strong> whether required files for the current task are present; if not, go and check the task that produces the input file of the current task</p></li>
+<li><p>only run task for a sample when</p>
+<ul>
+<li>the input file is missing or</li>
+<li>a file that is an input file to one of the rules that leads to the current task is newer than the output file of the current task</li>
+<li>the code definition of the current task changed</li>
+</ul></li>
+</ul>
+</section>
+<section id="example-makefile-for-sorting-by-coordinate-command" class="slide level2">
+<h2>Example Makefile for “sorting by coordinate” command</h2>
+<p><img data-src="example_workflow.svg" /></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1"></a><span class="ex">sample1.sorted.bam</span>: sample1.hg19.bam</span>
+<span id="cb5-2"><a href="#cb5-2"></a>    <span class="ex">samtools</span> sort -o <span class="va">$@</span> $^</span></code></pre></div>
+</section>
+<section id="successors-of-make" class="slide level2">
+<h2>Successors of make</h2>
+<ul>
+<li><p>originally written in the 70s; still used today in software development</p></li>
+<li><p>concept independent of software development: can be used for any kind of commands</p></li>
+<li><p>however,</p>
+<ul>
+<li>scripting language is rather rudimentary</li>
+<li>lacks common features for data processing, e.g. logging of meta-data</li>
+<li>not easily scalable to the usage on the cluster</li>
+<li>does not integrate well with conda</li>
+</ul></li>
+<li><p>adaptation for use in data-driven sciences: e.g. <a href="https://www.nextflow.io/">Nextflow</a>, <a href="https://snakemake.readthedocs.io/en/stable/">Snakemake</a>.</p></li>
+</ul>
+</section>
+<section id="nextflow-vs.-snakemake" class="slide level2">
+<h2>Nextflow vs. Snakemake</h2>
+<ul>
+<li>different concepts regarding how to connect tasks and the underlying language</li>
+</ul>
+<ol type="1">
+<li><p>Nextflow</p>
+<ul>
+<li>tasks connection: channels (push)</li>
+<li>language: Groovy</li>
+</ul></li>
+<li><p>Snakemake</p>
+<ul>
+<li>tasks connection: filename, similar like make (pull)</li>
+<li>language: Python</li>
+</ul></li>
+</ol>
+</section>
+</section>
+<section>
+<section id="snakemake" class="title-slide slide level1">
+<h1>Snakemake</h1>
+<ul>
+<li><p>available since 2012:</p>
+<p><small>Johannes Köster, Sven Rahmann, Snakemake—a scalable bioinformatics workflow engine, Bioinformatics, Volume 28, Issue 19, 1 October 2012, Pages 2520–2522, <a href="https://doi.org/10.1093/bioinformatics/bts480" class="uri">https://doi.org/10.1093/bioinformatics/bts480</a></small></p></li>
+<li><p>abstract:</p>
+<p>“Snakemake is a workflow engine that provides a readable Python-based workflow definition language and a powerful execution environment that scales from single-core workstations to compute clusters without modifying the workflow. It is the first system to support the use of automatically inferred multiple named wildcards (or variables) in input and output filenames.”</p></li>
+</ul>
+</section>
+<section id="execution" class="slide level2">
+<h2>Execution</h2>
+<ul>
+<li>execution scheme very similar to <code>make</code></li>
+</ul>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1"></a><span class="ex">snakemake</span> -s Snakefile [...]</span></code></pre></div>
+<ul>
+<li>long list of powerful command-line options; try <code>snakemake -h</code></li>
+<li>detailed overview over options: <a href="https://snakemake.readthedocs.io/en/stable/">readthedocs Snakemake</a></li>
+</ul>
+</section>
+<section id="rules" class="slide level2">
+<h2>Rules</h2>
+<ul>
+<li>reminder: rule definition in <code>make</code></li>
+</ul>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1"></a><span class="op">&lt;</span><span class="ex">output</span><span class="op">&gt;</span>: <span class="op">&lt;</span>input<span class="op">&gt;</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a>    <span class="bu">command</span></span></code></pre></div>
+<ul>
+<li>in <code>snakemake</code>:</li>
+</ul>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1"></a><span class="ex">rule</span> <span class="op">&lt;</span>name of the rule<span class="op">&gt;</span>:</span>
+<span id="cb8-2"><a href="#cb8-2"></a>    <span class="ex">input</span>:</span>
+<span id="cb8-3"><a href="#cb8-3"></a>        <span class="st">&quot;&lt;input&gt;&quot;</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a>    <span class="ex">output</span>:</span>
+<span id="cb8-5"><a href="#cb8-5"></a>        <span class="st">&quot;&lt;output&gt;&quot;</span></span>
+<span id="cb8-6"><a href="#cb8-6"></a>    <span class="ex">shell</span>/run:</span>
+<span id="cb8-7"><a href="#cb8-7"></a>        <span class="bu">command</span></span></code></pre></div>
+<p><strong>Attention</strong>: indentation is important - either <strong>Tabs</strong> or a regular number of spaces (e.g. 4 or 8)</p>
+</section>
+<section id="implementing-the-first-rule" class="slide level2">
+<h2>Implementing the first rule</h2>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1"></a><span class="ex">rule</span> sort_coord:</span>
+<span id="cb9-2"><a href="#cb9-2"></a>    <span class="ex">input</span>:</span>
+<span id="cb9-3"><a href="#cb9-3"></a>        <span class="st">&quot;{sample}.hg19.bam&quot;</span></span>
+<span id="cb9-4"><a href="#cb9-4"></a>    <span class="ex">output</span>:</span>
+<span id="cb9-5"><a href="#cb9-5"></a>        <span class="st">&quot;{sample}.sorted.bam&quot;</span></span>
+<span id="cb9-6"><a href="#cb9-6"></a>    <span class="ex">shell</span>:</span>
+<span id="cb9-7"><a href="#cb9-7"></a>        <span class="st">&quot;&quot;&quot;</span></span>
+<span id="cb9-8"><a href="#cb9-8"></a><span class="st">        samtools sort -o {output} {input}</span></span>
+<span id="cb9-9"><a href="#cb9-9"></a><span class="st">        &quot;&quot;&quot;</span></span></code></pre></div>
+</section>
+<section id="special-case-rule-without-input-requirements" class="slide level2">
+<h2>Special case: rule without input requirements</h2>
+<ul>
+<li><p>recursive iteration through workflow: which output file depends on which input file?</p></li>
+<li><p>by implementation: file listed in <strong>input</strong> has to be the output file of a different rule</p></li>
+<li><p><strong>non-cyclic workflows</strong>: one rule cannot have a file stated as input</p></li>
+<li><p>solution: if file was generated outside of workflow, state as a rule parameter (<strong>params</strong>)</p></li>
+</ul>
+</section>
+<section id="special-case-rule-without-input-requirements-1" class="slide level2">
+<h2>Special case: rule without input requirements</h2>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1"></a><span class="ex">rule</span> sort_coord:</span>
+<span id="cb10-2"><a href="#cb10-2"></a>    <span class="ex">output</span>:</span>
+<span id="cb10-3"><a href="#cb10-3"></a>        <span class="st">&quot;{sample}.sorted.bam&quot;</span></span>
+<span id="cb10-4"><a href="#cb10-4"></a>    <span class="ex">params</span>:</span>
+<span id="cb10-5"><a href="#cb10-5"></a>        <span class="ex">bam</span> = <span class="st">&quot;{sample}.hg19.bam&quot;</span></span>
+<span id="cb10-6"><a href="#cb10-6"></a>    <span class="ex">shell</span>:</span>
+<span id="cb10-7"><a href="#cb10-7"></a>        <span class="st">&quot;&quot;&quot;</span></span>
+<span id="cb10-8"><a href="#cb10-8"></a><span class="st">        samtools sort -o {output} {params.bam}</span></span>
+<span id="cb10-9"><a href="#cb10-9"></a><span class="st">        &quot;&quot;&quot;</span></span></code></pre></div>
+<ul>
+<li>files listed as parameters will not be checked regarding the directionality</li>
+</ul>
+</section>
+<section id="implementing-the-second-rule" class="slide level2">
+<h2>Implementing the second rule</h2>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1"></a><span class="ex">rule</span> index_sorted_bam:</span>
+<span id="cb11-2"><a href="#cb11-2"></a>    <span class="ex">input</span>:</span>
+<span id="cb11-3"><a href="#cb11-3"></a>        <span class="st">&quot;{sample}.sorted.bam&quot;</span></span>
+<span id="cb11-4"><a href="#cb11-4"></a>    <span class="ex">output</span>:</span>
+<span id="cb11-5"><a href="#cb11-5"></a>        <span class="st">&quot;{sample}.sorted.bam.bai&quot;</span></span>
+<span id="cb11-6"><a href="#cb11-6"></a>    <span class="ex">shell</span>:</span>
+<span id="cb11-7"><a href="#cb11-7"></a>        <span class="st">&quot;&quot;&quot;</span></span>
+<span id="cb11-8"><a href="#cb11-8"></a><span class="st">        samtools index {input}</span></span>
+<span id="cb11-9"><a href="#cb11-9"></a><span class="st">        &quot;&quot;&quot;</span></span></code></pre></div>
+<p>for all but the first rules, the directionality of the workflow is established by stating the output of one rule as the input of the subsequent rule</p>
+</section>
+<section id="providing-the-list-of-samples-in-for-loops" class="slide level2">
+<h2>Providing the list of samples in for-loops</h2>
+<p>either explicitly stated:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1"></a><span class="kw">for</span> <span class="ex">i</span> in sample1 sample2 sample3<span class="kw">;</span> <span class="kw">do</span></span></code></pre></div>
+<p>or inferred:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1"></a><span class="kw">for</span> <span class="ex">i</span> in <span class="va">$(</span><span class="fu">ls</span> data/*.hg19.bam<span class="va">)</span><span class="kw">;</span> <span class="kw">do</span></span></code></pre></div>
+<ul>
+<li>identical in <code>snakemake</code> but Python is used as the scripting language</li>
+</ul>
+</section>
+<section id="providing-the-list-of-samples---snakemake" class="slide level2">
+<h2>Providing the list of samples - Snakemake</h2>
+<p>either explicitly stated:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1"></a>SAMPLES <span class="op">=</span> [<span class="st">&#39;sample1&#39;</span>, <span class="st">&#39;sample2&#39;</span>, <span class="st">&#39;sample3&#39;</span>]</span></code></pre></div>
+<p>or inferred:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1"></a>SAMPLES, <span class="op">=</span> glob_wildcards(<span class="st">&quot;data/</span><span class="sc">{sample}</span><span class="st">.hg19.bam&quot;</span>)</span></code></pre></div>
+<ul>
+<li><code>glob_wildcards()</code>
+<ul>
+<li>runs a <code>ls()</code> command to get the list of files</li>
+<li>extracts the pattern <code>{sample}</code> from the filename (equivalent to <code>basename</code>/<code>sed</code>)</li>
+</ul></li>
+</ul>
+</section>
+<section id="the-dummy-all-rule" class="slide level2">
+<h2>The dummy “all” rule</h2>
+<ul>
+<li><code>snakemake</code> infers the expected wildcards and therefore filenames on the fly</li>
+<li>the recursive iteration requires that one rule has no <strong>wildcards</strong> in its input statement</li>
+</ul>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1"></a><span class="ex">rule</span> all:</span>
+<span id="cb16-2"><a href="#cb16-2"></a>    <span class="ex">input</span>:</span>
+<span id="cb16-3"><a href="#cb16-3"></a>        <span class="ex">expand</span>(<span class="st">&quot;{sample}.sorted.bam.bai&quot;</span>, sample=SAMPLES)</span></code></pre></div>
+<ul>
+<li><strong>dummy rule</strong>: no output</li>
+<li>function <strong>expand()</strong> generates the list of expected filenames given the filename pattern and the list of samples</li>
+</ul>
+</section>
+<section id="test-our-workflow" class="slide level2">
+<h2>Test our workflow</h2>
+<ul>
+<li>save Snakefile</li>
+<li>execute it in <strong>dry-run</strong> mode: show what you will do, but don’t do it</li>
+</ul>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1"></a><span class="ex">snakemake</span> -s test.Snakefile -n -p</span></code></pre></div>
+<ul>
+<li>options:
+<ul>
+<li><code>-n</code>: dry-run mode</li>
+<li><code>-p</code>: print command plot</li>
+</ul></li>
+</ul>
+</section>
+<section id="run-the-complete-workflow" class="slide level2">
+<h2>Run the complete workflow</h2>
+<ul>
+<li>prepared in the repository</li>
+<li>two versions: the efficient one removes a bottleneck of saving a large file unnecessarily to file</li>
+</ul>
+<p>``{bash, eval=F} snakemake -s rrdm_workflow_management.efficient.Snakefile -n -p</p>
+<pre><code>
+
+
+# More advanced snakemake
+
+## Grammar blocks to decorate your rules:
+
+  - four grammar blocks have been introduced so far:
+    + input
+    + output
+    + params
+    + shell
+
+  - however, a few more useful ones
+
+## Grammar blocks to decorate your rules:
+
+  - **message**: replace the cryptic Snakemake output with a catchy message that tells you what is
+    currently executed and on which sample
+  - **log**: provides a fast way to define the filename for saving the log file using wildcards
+  - **benchmark**: provides you feedback, how many resources (mainly memory) were used for executing
+    a rule
+
+## Grammar blocks to decorate your rules:
+
+  - **resources**: define a custom list of resources in order to restrict the parallel execution of
+    resources-hungry jobs
+  - **threads**: define the number of CPUs a job needs in order to restrict the parallel execution of
+    resources-hungry jobs 
+  - **run**: run Python or R code directly instead of a shell script
+
+## Running jobs in parallel
+
+  - rules that do not depend on other samples can be run in parallel for each sample
+  - **requirement**: more than one job is allowed at the same time
+  - in order to enable more jobs use option `-j` or `--jobs`:
+
+
+```bash
+snakemake -s test.Snakefile -j 3</code></pre>
+<ul>
+<li>on a local computer, jobs are restricted by the number of <strong>threads</strong> defined in a rule</li>
+</ul>
+</section>
+<section id="running-jobs-on-the-cluster" class="slide level2">
+<h2>Running jobs on the cluster</h2>
+<ul>
+<li>no change to code necessary, just provide commandline option <code>--cluster</code> and your parameters for the scheduler, e.g. SLURM</li>
+</ul>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1"></a><span class="ex">snakemake</span> -s test.Snakefile \</span>
+<span id="cb19-2"><a href="#cb19-2"></a>    --cluster <span class="st">&quot;sbatch --mem 8G -p short -t 0-2:00&quot;</span> -j 3</span></code></pre></div>
+<ul>
+<li>specify different resource requirements (memory, partition, time) for individual rules using the option <code>--cluster-config</code> and a JSON file</li>
+</ul>
+</section>
+<section id="cleaning-intermediate-files" class="slide level2">
+<h2>Cleaning intermediate files</h2>
+<ul>
+<li>wrap <strong>temp()</strong> around filename of the output rule to have automatically removed as an intermediate file when all rules that depend on it have successfully finished</li>
+</ul>
+<div class="sourceCode" id="cb20"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1"></a><span class="ex">rule</span> sort_coord:</span>
+<span id="cb20-2"><a href="#cb20-2"></a>    <span class="ex">output</span>:</span>
+<span id="cb20-3"><a href="#cb20-3"></a>        <span class="ex">temp</span>(<span class="st">&quot;{sample}.sorted.bam&quot;</span>)</span>
+<span id="cb20-4"><a href="#cb20-4"></a>    <span class="ex">params</span>:</span>
+<span id="cb20-5"><a href="#cb20-5"></a>        <span class="ex">bam</span> = <span class="st">&quot;{sample}.hg19.bam&quot;</span></span>
+<span id="cb20-6"><a href="#cb20-6"></a>    <span class="ex">shell</span>:</span>
+<span id="cb20-7"><a href="#cb20-7"></a>        <span class="st">&quot;&quot;&quot;</span></span>
+<span id="cb20-8"><a href="#cb20-8"></a><span class="st">        samtools sort -o {output} {params.bam}</span></span>
+<span id="cb20-9"><a href="#cb20-9"></a><span class="st">        &quot;&quot;&quot;</span></span></code></pre></div>
+<ul>
+<li>opposite: <strong>protected()</strong> - do not delete ever</li>
+</ul>
+</section>
+<section id="overview-over-all-rule-options" class="slide level2">
+<h2>Overview over all rule options</h2>
+<p><a href="https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html">Rules</a></p>
+</section>
+</section>
+<section id="conclusion" class="title-slide slide level1">
+<h1>Conclusion</h1>
+<ul>
+<li>the scripting language provides tools for running computational analyses, but has short-comings when dealing with complex workflows</li>
+<li>multiple workflow management systems available: Snakemake, Nextflow, make</li>
+</ul>
+</section>
+
+<section id="conclusion-1" class="title-slide slide level1">
+<h1>Conclusion</h1>
+<ul>
+<li><p>major advantages:</p>
+<ul>
+<li>higher research efficiency: run only necessary jobs; execute jobs in parallel; job-specific resources</li>
+<li>implementation identical for execution locally or on cluster<br />
+</li>
+<li>formal scaffold of building rules: higher readability of code</li>
+<li>automatic logging of execution</li>
+<li>provides tools to automatically clean the temporary files</li>
+</ul></li>
+</ul>
+</section>
+
+<section>
+<section id="examples" class="title-slide slide level1">
+<h1>Examples</h1>
+
+</section>
+<section id="eager2-nextflow" class="slide level2">
+<h2>EAGER2 (Nextflow)</h2>
+<p><img data-src="EAGER2_workflow.png" alt="EAGER2 workflow" /></p>
+<p><a href="https://nf-co.re/eager" class="uri">https://nf-co.re/eager</a></p>
+</section>
+<section id="mitobench-ancient-mtdna-pipeline-snakemake" class="slide level2">
+<h2>mitoBench ancient mtDNA pipeline (Snakemake)</h2>
+<p><img src="mitoBench_pipeline-graph.png" width="400px" height="450px" /></p>
+<p><a href="http://github.com/alexhbnr/mitoBench-ancientMT" class="uri">http://github.com/alexhbnr/mitoBench-ancientMT</a></p>
+</section>
+</section>
+    </div>
+  </div>
+
+  <script src="rrmd_workflow_management_files/reveal.js-3.3.0.1/lib/js/head.min.js"></script>
+  <script src="rrmd_workflow_management_files/reveal.js-3.3.0.1/js/reveal.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        // Display the page number of the current slide
+        slideNumber: true,
+        // Push each slide change to the browser history
+        history: true,
+        // Vertical centering of slides
+        center: false,
+        // Transition style
+        transition: 'none', // none/fade/slide/convex/concave/zoom
+        // Transition style for full page slide backgrounds
+        backgroundTransition: 'default', // none/fade/slide/convex/concave/zoom
+
+
+
+        // Optional reveal.js plugins
+        dependencies: [
+          { src: 'rrmd_workflow_management_files/reveal.js-3.3.0.1/plugin/notes/notes.js', async: true },
+        ]
+      });
+    </script>
+  <!-- dynamically load mathjax for compatibility with self-contained -->
+  <script>
+    (function () {
+      var script = document.createElement("script");
+      script.type = "text/javascript";
+      script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+      document.getElementsByTagName("head")[0].appendChild(script);
+    })();
+  </script>
+
+<script>
+  (function() {
+    if (window.jQuery) {
+      Reveal.addEventListener( 'slidechanged', function(event) {  
+        window.jQuery(event.previousSlide).trigger('hidden');
+        window.jQuery(event.currentSlide).trigger('shown');
+      });
+    }
+  })();
+</script>
+
+
+  </body>
+</html>
