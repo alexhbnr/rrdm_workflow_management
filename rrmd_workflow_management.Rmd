@@ -505,3 +505,18 @@ knitr::include_graphics("./mitoBench_pipeline-graph.png")
 ```
 
 http://github.com/alexhbnr/mitoBench-ancientMT
+
+## Running mitoBench ancient mtDNA pipeline
+
+```{bash, eval = F}
+snakemake -s mitoBench_pipeline.Snakefile \
+          --configfile mitoBench_pipeline-config.json \
+          --cluster-config mitoBench_pipeline-SLURM.json \
+          --cluster 'sbatch --mem {cluster.mem} -p {cluster.partition} \
+                    -t {cluster.time} -o {cluster.out} \
+                    -e {cluster.err} -n {threads}' \
+          --use-conda \
+          --local-cores 8 \
+          --cores 20
+```
+

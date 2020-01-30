@@ -1024,6 +1024,18 @@ snakemake -s test.Snakefile -j 3</code></pre>
 <p><img src="mitoBench_pipeline-graph.png" width="400px" height="450px" /></p>
 <p><a href="http://github.com/alexhbnr/mitoBench-ancientMT" class="uri">http://github.com/alexhbnr/mitoBench-ancientMT</a></p>
 </section>
+<section id="running-mitobench-ancient-mtdna-pipeline" class="slide level2">
+<h2>Running mitoBench ancient mtDNA pipeline</h2>
+<div class="sourceCode" id="cb21"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1"></a><span class="ex">snakemake</span> -s mitoBench_pipeline.Snakefile \</span>
+<span id="cb21-2"><a href="#cb21-2"></a>          --configfile mitoBench_pipeline-config.json \</span>
+<span id="cb21-3"><a href="#cb21-3"></a>          --cluster-config mitoBench_pipeline-SLURM.json \</span>
+<span id="cb21-4"><a href="#cb21-4"></a>          --cluster <span class="st">&#39;sbatch --mem {cluster.mem} -p {cluster.partition} \</span></span>
+<span id="cb21-5"><a href="#cb21-5"></a><span class="st">                    -t {cluster.time} -o {cluster.out} \</span></span>
+<span id="cb21-6"><a href="#cb21-6"></a><span class="st">                    -e {cluster.err} -n {threads}&#39;</span> \</span>
+<span id="cb21-7"><a href="#cb21-7"></a>          --use-conda \</span>
+<span id="cb21-8"><a href="#cb21-8"></a>          --local-cores 8 \</span>
+<span id="cb21-9"><a href="#cb21-9"></a>          --cores 20</span></code></pre></div>
+</section>
 </section>
     </div>
   </div>
